@@ -1,5 +1,5 @@
 # Final-Project: การวิเคราะห์และทำนายค่าพลังนักเตะในเกม EA SPORTS FC 26
-### (Analysis and Prediction of Player Ratings in EA SPORTS FC 26)
+### (Analytics and Prediction of Player Ratings in EA SPORTS FC 26)
 
 > **รายวิชา:** 1145 201 คณิตศาสตร์สำหรับวิทยาการข้อมูล (Mathematics for Data Science)  
 > **ภาคการศึกษา:** 1/2569
@@ -12,7 +12,7 @@
 
 ## 📌 ภาพรวมโครงงาน (Project Overview & Problem Statement)
 
-โครงงานนี้มีเป้าหมายเพื่อจำแนกและทำนายระดับค่าพลังนักเตะ (Overall Rating) ในเกม EA SPORTS FC 26 โดยอาศัยข้อมูลค่าพลังย่อย สไตล์การเล่น และข้อมูลทางกายภาพของนักเตะ โดยประยุกต์ใช้แนวคิดทางคณิตศาสตร์ สถิติ และวิทยาการข้อมูลอย่างเป็นระบบ ตั้งแต่การวิเคราะห์ข้อมูลด้วย **Linear Algebra (PCA)**, การทดสอบสมมติฐานทางสถิติ (**ANOVA & Chi-Square**), การวิเคราะห์ **Bias-Variance Trade-off** ตลอดจนการประเมินและคัดเลือกโมเดลด้วย **5-Fold Stratified Cross-Validation**
+โครงงานนี้มีเป้าหมายเพื่อทำนายระดับค่าพลังนักเตะ (Overall Rating) ในเกม EA SPORTS FC 26 โดยอาศัยข้อมูลค่าพลังย่อย สไตล์การเล่น และข้อมูลทางกายภาพของนักเตะ โดยประยุกต์ใช้แนวคิดทางคณิตศาสตร์ สถิติ และวิทยาการข้อมูลอย่างเป็นระบบ ตั้งแต่การวิเคราะห์ข้อมูลด้วย **Linear Algebra (PCA)**, การทดสอบสมมติฐานทางสถิติ (**ANOVA & Chi-Square**), การวิเคราะห์ **Bias-Variance Trade-off** ตลอดจนการประเมินและคัดเลือกโมเดลด้วย **5-Fold Cross-Validation**
 
 ---
 
@@ -31,8 +31,8 @@
 | :---: | :--- | :--- | :--- | :---: |
 | **Week 4** | **CLO1: Linear Algebra** | Covariance Matrix, Eigendecomposition & PCA | ประยุกต์ใช้ PCA เพื่อวิเคราะห์โครงสร้างของข้อมูล ลดมิติข้อมูล พร้อมแสดง Explained Variance, Scree Plot และการกระจายตัวของข้อมูลบน PC1 และ PC2 | ✅ |
 | **Week 6–7** | **CLO2: Statistical Learning & EDA** | Distribution, Hypothesis Testing, Bias-Variance | วิเคราะห์การกระจายตัวด้วย Histogram และ Boxplot ทดสอบสมมติฐานทางสถิติ และจัดการ Missing values เช่น คอลัมน์ `playStyles` | ✅ |
-| **Week 11–13** | **CLO3: Model Building** | Classification Pipeline, Logistic Regression, KNN | สร้าง Pipeline ร่วมกับ `StandardScaler` พัฒนาโมเดลเพื่อจำแนกกลุ่มระดับค่าพลังนักเตะ | ✅ |
-| **Week 14** | **CLO4: Model Selection & CV** | 5-Fold Stratified CV, Model Comparison | เปรียบเทียบประสิทธิภาพของโมเดลจำแนกประเภท และคัดเลือกโมเดลที่ดีที่สุดจาก Mean CV Accuracy | ✅ |
+| **Week 11–13** | **CLO3: Model Building** | Regression Pipeline, Linear Regression, KNN | สร้าง Pipeline ร่วมกับ `StandardScaler` พัฒนาโมเดลเพื่อทำนายค่าพลังรวมของนักเตะแบบต่อเนื่อง | ✅ |
+| **Week 14** | **CLO4: Model Selection & CV** | 5-Fold CV, Model Comparison | เปรียบเทียบประสิทธิภาพของโมเดลทำนายค่าต่อเนื่อง และคัดเลือกโมเดลที่ดีที่สุดจาก Mean CV MSE | ✅ |
 
 ---
 
@@ -62,35 +62,35 @@
 | `physicality` | Numerical | ความแข็งแกร่งทางร่างกาย |
 | `playStyles` | Categorical | สไตล์การเล่นพิเศษของนักเตะ |
 | `playStylesPlus` | Categorical | สไตล์การเล่นขั้นสูง (PlayStyles+) |
-| `overall` | Numerical / Categorical | ค่าพลังรวม (ตัวแปรเป้าหมาย) |
+| `overall` | Numerical | ค่าพลังรวม (ตัวแปรเป้าหมาย) |
 
 ---
 
 ## 🏆 ผลการทดลองและเปรียบเทียบแบบจำลอง (Key Findings & Results)
 
-*(ข้อมูลส่วนนี้จะถูกอัปเดตเมื่อการทดสอบใน Part 4-6 เสร็จสิ้น)*
+จากการประเมินประสิทธิภาพด้วยกระบวนการ **5-Fold Cross-Validation** (วัดค่าความคลาดเคลื่อนด้วย Mean Squared Error: MSE) สามารถสรุปผลได้ดังนี้:
 
-| โมเดล (Classification Model) | Mean CV Accuracy | Standard Deviation (±) | Test Accuracy | Macro F1-Score |
-| :--- | :---: | :---: | :---: | :---: |
-| 🌲 **Random Forest Classifier (Best Model)** | **--.--%** | **±-.--%** | **--.--%** | **-.--** |
-| 📈 Logistic Regression (Multi-class) | --.--% | ±-.--% | --.--% | -.-- |
-| 📍 K-Nearest Neighbors | --.--% | ±-.--% | --.--% | -.-- |
+| โมเดล (Regression Model) | Mean CV MSE | Standard Deviation (±) |
+| :--- | :---: | :---: |
+| 🌲 **Random Forest (Best Model)** | **1.39** | **±0.05** |
+| 📍 K-Nearest Neighbors (k=5) | 5.08 | ±0.22 |
+| 📈 Multiple Linear Regression | 6.43 | ±0.25 |
 
 > **สรุปผลการทดลอง:**  
-> *(รอสรุปผลเปรียบเทียบโมเดลเมื่อสิ้นสุดโครงงาน)*
+> จากการเปรียบเทียบโมเดลทั้ง 3 แบบ พบว่า **Random Forest มีประสิทธิภาพดีที่สุด** โดยมีค่าเฉลี่ยความคลาดเคลื่อนกำลังสอง (Mean CV MSE) ต่ำที่สุดเพียง 1.39 และมีความแปรปรวนในการทำนายต่ำที่สุดที่ ±0.05 รองลงมาคือ KNN (k=5) ที่มีค่า MSE 5.08 และ Multiple Linear Regression ที่มีค่า MSE 6.43 ตามลำดับ ผลลัพธ์นี้แสดงให้เห็นว่าความสัมพันธ์ระหว่างปัจจัยต่างๆ กับค่าพลังรวม (Overall) ของนักเตะ มีความซับซ้อนและไม่เป็นเชิงเส้นตรงทั้งหมด (Non-linear) โมเดลประเภท Tree-based อย่าง Random Forest จึงสามารถจับรูปแบบข้อมูลและทำนายผลได้แม่นยำกว่าโมเดลเชิงเส้นตรงอย่างชัดเจน
 
 ---
 
 ## 📁 โครงสร้างโปรเจกต์ (Repository Structure)
 
 ```text
-math-ds-fc26-project/
+ea-fc26-analytics-project/
 ├── data/
-│   └── ea_fc26_outfield.csv           # ชุดข้อมูลที่ใช้ในโครงงาน
+│   └── ea_fc26_outfield.csv             # ชุดข้อมูลที่ใช้ในโครงงาน
 ├── notebook/
 │   └── ea-fc26-analytics-project.ipynb  # Jupyter Notebook ฉบับสมบูรณ์ (Part 1 - 6)
-├── requirements.txt                       # ไลบรารีและเวอร์ชันที่ใช้ในโครงงาน
-└── README.md                              # รายละเอียดโครงงาน
+├── requirements.txt                     # ไลบรารีและเวอร์ชันที่ใช้ในโครงงาน
+└── README.md                            # รายละเอียดโครงงาน
 ```
 ---
 
@@ -99,7 +99,7 @@ math-ds-fc26-project/
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/poramet-sudo/ea-fc26-analytics-project.git
-cd math-ds-fc26-project
+cd ea-fc26-analytics-project
 ```
 
 ### 2. สร้างและเปิดใช้งาน Virtual Environment
